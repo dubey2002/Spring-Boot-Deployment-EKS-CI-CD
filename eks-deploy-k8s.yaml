@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: springboot-deployment
+  labels:
+    app: springboot-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: springboot-app
+  template:
+    metadata:
+      labels:
+        app: springboot-app
+    spec:
+      containers:
+        - name: my-springboot-app
+          image: <your_aws_account_id>.dkr.ecr.ap-northeast-1.amazonaws.com/test-repo:$BUILD_ID
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000  # 🔥 Updated to match your app's new port
+              name: http
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: springboot-service
+  labels:
+    app: springboot-app
+spec:
+  selector:
+    app: springboot-app
+  type: NodePort
+  ports:
+    - name: http
+      port: 80             # Internal cluster port
+      targetPort: 3000     # 🧠 Must match containerPort
+      nodePort: 3000       # 🔥 External exposed port
+      protocol: TCP
