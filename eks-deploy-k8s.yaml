@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: my-springboot-app
-          image: 121263836368.dkr.ecr.ap-south-2.amazonaws.com/three-tier:$BUILD_ID
+          image: 121263836368.dkr.ecr.ap-south-2.amazonaws.com/three-tier:v1.$BUILD_ID
           imagePullPolicy: Always
           ports:
             - containerPort: 3000  # 🔥 Updated to match your app's new port
